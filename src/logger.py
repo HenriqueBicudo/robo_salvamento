@@ -61,3 +61,9 @@ class LoggerRobo:
     def limpar(self) -> None:
         """Limpa todas as entradas do log"""
         self.entradas.clear()
+
+    def get_sequencia_compacta(self) -> str:
+        """Retorna a sequência compacta de comandos registrados (exclui LIGAR)."""
+        comandos = [entrada[0] for entrada in self.entradas if entrada]
+        letras = [cmd for cmd in comandos if len(cmd) == 1]
+        return ''.join(letras)

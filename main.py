@@ -52,6 +52,14 @@ def executar_missao(arquivo_mapa: str, diretorio_logs: str = "logs") -> bool:
         print(f"   • Humano coletado: {'✅' if stats['humano_coletado'] else '❌'}")
         print(f"   • Missão concluída: {'✅' if stats['missao_concluida'] else '❌'}")
         
+        sequencia_compacta = logger.get_sequencia_compacta()
+        if sequencia_compacta:
+            print(f"\n📜 Sequência de comandos (compacta):")
+            largura_linha = 60
+            for inicio in range(0, len(sequencia_compacta), largura_linha):
+                trecho = sequencia_compacta[inicio:inicio + largura_linha]
+                print(f"   {trecho}")
+
         if sucesso:
             print(f"\n🎉 MISSÃO CONCLUÍDA COM SUCESSO!")
             print(f"📄 Log salvo em: {logger.get_nome_arquivo()}")

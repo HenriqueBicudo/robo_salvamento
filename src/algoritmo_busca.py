@@ -135,6 +135,11 @@ class AlgoritmoBusca:
             
             # Vira para a direção escolhida se necessário
             self._virar_para_direcao(proxima_direcao)
+
+            # Após reorientar, verifica novamente se humano está à frente
+            if self.robo._ler_sensor_frente() == TipoSensor.HUMANO:
+                self.humano_encontrado = True
+                return
             
             # Move para frente
             self.robo.avancar()
