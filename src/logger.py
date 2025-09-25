@@ -1,6 +1,5 @@
 """
 Sistema de logging CSV para auditoria do robô de salvamento
-Autor: [SEU NOME E MATRÍCULA AQUI]
 """
 
 import csv

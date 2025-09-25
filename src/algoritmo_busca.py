@@ -1,7 +1,6 @@
 """
 Algoritmo inteligente de busca e salvamento
 Implementa busca autônoma baseada apenas em sensores
-Autor: [SEU NOME E MATRÍCULA AQUI]
 """
 
 from typing import Dict, Set, List, Optional, Tuple

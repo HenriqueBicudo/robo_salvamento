@@ -1,7 +1,6 @@
 """
 Arquivo principal do simulador do robô de salvamento
 Executa missões completas de busca e salvamento
-Autor: [SEU NOME E MATRÍCULA AQUI]
 """
 
 import sys
@@ -80,8 +79,10 @@ def main():
     """Função principal"""
     print("🤖 SIMULADOR DO ROBÔ DE SALVAMENTO")
     print("Prof. Mozart Hasse - Serviços Cognitivos")
-    print("Alunos: [ADICIONE SEUS NOMES E MATRÍCULAS AQUI]")
-    
+    print("**Aluno:** [Enzo Luiz Berlesi Salles - RA:2023102306]")
+    print("**Aluno:** [Joao Pedro Calixto Godoy - RA:2023100923]")
+    print("**Aluno:** [Henrique Bicudo - RA:2023103607]")
+        
     # Verifica argumentos da linha de comando
     if len(sys.argv) < 2:
         print(f"\n❌ Uso: {sys.argv[0]} <arquivo_mapa> [diretorio_logs]")

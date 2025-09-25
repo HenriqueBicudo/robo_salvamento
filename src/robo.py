@@ -1,7 +1,6 @@
 """
 Hardware embarcado do robô de salvamento
 Implementa sensores, atuadores e validações de segurança
-Autor: [SEU NOME E MATRÍCULA AQUI]
 """
 
 from typing import Dict, Set, Optional

@@ -1,6 +1,5 @@
 """
 Estruturas fundamentais para o robô de salvamento
-Autor: [SEU NOME E MATRÍCULA AQUI]
 """
 
 from enum import Enum

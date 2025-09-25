@@ -3,8 +3,8 @@
 **Disciplina:** Serviços Cognitivos  
 **Professor:** Mozart Hasse  
 **Aluno:** [Enzo Luiz Berlesi Salles - RA:2023102306]
-**Aluno:** [Joao Pedro Calixto Godoy - RA: ]
-**Aluno:** [Henrique Bicudo - RA:]
+**Aluno:** [Joao Pedro Calixto Godoy - RA:2023100923]
+**Aluno:** [Henrique Bicudo - RA:2023103607]
 
 
 

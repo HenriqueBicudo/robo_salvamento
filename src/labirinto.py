@@ -1,7 +1,6 @@
 """
 Simulador do ambiente virtual do robô de salvamento
 Responsável por carregar e simular o labirinto
-Autor: [SEU NOME E MATRÍCULA AQUI]
 """
 
 from typing import List, Optional

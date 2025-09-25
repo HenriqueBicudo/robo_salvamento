@@ -1,7 +1,6 @@
 """
 Script de demonstração do robô de salvamento
 Executa todos os mapas de teste e gera relatório
-Autor: [SEU NOME E MATRÍCULA AQUI]
 """
 
 import os

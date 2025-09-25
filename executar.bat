@@ -2,7 +2,9 @@
 echo 🤖 ROBÔ DE SALVAMENTO - SISTEMA EMBARCADO
 echo =========================================
 echo Prof. Mozart Hasse - Serviços Cognitivos
-echo Alunos: [ADICIONE SEUS NOMES E MATRÍCULAS AQUI]
+echo **Aluno:** [Enzo Luiz Berlesi Salles - RA:2023102306]
+echo **Aluno:** [Joao Pedro Calixto Godoy - RA:2023100923]
+echo **Aluno:** [Henrique Bicudo - RA:2023103607]
 echo.
 
 REM Verifica se Python está instalado
