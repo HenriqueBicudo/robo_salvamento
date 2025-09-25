@@ -1,0 +1,21 @@
+# Robô de Salvamento - Dependências
+
+# Este projeto usa apenas bibliotecas padrão do Python 3.7+
+# Não são necessárias dependências externas
+
+# Bibliotecas padrão utilizadas:
+# - enum (enumerações)
+# - dataclasses (estruturas de dados) 
+# - typing (type hints)
+# - csv (manipulação de CSV)
+# - collections (estruturas de dados)
+# - unittest (testes)
+# - tempfile (arquivos temporários para testes)
+# - os (operações do sistema)
+# - sys (sistema Python)
+# - pathlib (manipulação de caminhos)
+
+# Para desenvolvimento (opcional):
+# flake8>=3.9.0  # Linting
+# black>=21.0.0  # Formatação
+# mypy>=0.910    # Type checking
