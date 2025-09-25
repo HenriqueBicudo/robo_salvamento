@@ -4,7 +4,7 @@ Implementa sensores, atuadores e validações de segurança
 Autor: [SEU NOME E MATRÍCULA AQUI]
 """
 
-from typing import Dict, Set
+from typing import Dict, Set, Optional
 from .estruturas import (
     Posicao, Direcao, ComandoRobo, TipoSensor, StatusCarga,
     ColisaoException, AtropelamentoException, BecoSemSaidaException,
@@ -26,6 +26,8 @@ class Robo:
         self.posicao = labirinto.entrada
         self.direcao = labirinto.get_direcao_inicial()
         self.tem_humano = False
+        self.direcao_interior = self.direcao
+        self.direcao_saida = Direcao((self.direcao.value + 2) % 4)
         
         # Registro inicial dos sensores ao ligar
         self._registrar_leitura_inicial()
@@ -45,28 +47,49 @@ class Robo:
             status_carga
         )
     
+    def _ler_sensor_na_direcao(self, direcao_sensor: Direcao) -> TipoSensor:
+        """Lê um sensor apontado para uma direção absoluta específica"""
+        # Ao chegar na entrada, considere a saída como espaço livre para evitar claustrofobia
+        if self._esta_na_entrada() and direcao_sensor == self.direcao_saida:
+            return TipoSensor.VAZIO
+
+        posicao_sensor = self.posicao + direcao_sensor.get_delta()
+        return self.labirinto.ler_sensor(posicao_sensor)
+
     def _ler_sensor_esquerdo(self) -> TipoSensor:
         """Lê o sensor do lado esquerdo do robô"""
         # Calcula direção à esquerda (3 posições no sentido anti-horário)
         direcao_esquerda = Direcao((self.direcao.value - 1) % 4)
-        posicao_esquerda = self.posicao + direcao_esquerda.get_delta()
-        return self.labirinto.ler_sensor(posicao_esquerda)
+        return self._ler_sensor_na_direcao(direcao_esquerda)
     
     def _ler_sensor_direito(self) -> TipoSensor:
         """Lê o sensor do lado direito do robô"""
         direcao_direita = self.direcao.girar_direita()
-        posicao_direita = self.posicao + direcao_direita.get_delta()
-        return self.labirinto.ler_sensor(posicao_direita)
+        return self._ler_sensor_na_direcao(direcao_direita)
     
     def _ler_sensor_frente(self) -> TipoSensor:
         """Lê o sensor da frente do robô"""
-        posicao_frente = self.posicao + self.direcao.get_delta()
-        return self.labirinto.ler_sensor(posicao_frente)
+        return self._ler_sensor_na_direcao(self.direcao)
     
     def _get_status_carga(self) -> StatusCarga:
         """Retorna o status atual do compartimento de carga"""
         return StatusCarga.COM_HUMANO if self.tem_humano else StatusCarga.SEM_CARGA
     
+    def _esta_na_entrada(self, posicao: Optional[Posicao] = None) -> bool:
+        """Verifica se uma posição corresponde à entrada do labirinto"""
+        posicao_checar = posicao if posicao is not None else self.posicao
+        return self.labirinto.entrada == posicao_checar
+
+    def _ajustar_orientacao_para_interior(self) -> None:
+        """Garante que o robô esteja virado para dentro ao chegar na entrada"""
+        if self.direcao != self.direcao_interior:
+            self.direcao = self.direcao_interior
+
+    def _girar_para_direcao(self, direcao_alvo: Direcao) -> None:
+        """Gira o robô até ficar apontado para a direção desejada"""
+        while self.direcao != direcao_alvo:
+            self.girar()
+
     def _validar_colisao(self, nova_posicao: Posicao) -> None:
         """VALIDAÇÃO CRÍTICA: Verifica se movimento causaria colisão"""
         if not self.labirinto.pode_mover_para(nova_posicao):
@@ -85,6 +108,8 @@ class Robo:
     def _validar_beco_sem_saida(self) -> None:
         """VALIDAÇÃO CRÍTICA: Verifica se robô com humano está em beco sem saída"""
         if not self.tem_humano:
+            return
+        if self._esta_na_entrada():
             return
         
         # Conta quantos sensores veem parede
@@ -106,6 +131,8 @@ class Robo:
     def _validar_movimento_com_humano(self, nova_posicao: Posicao) -> None:
         """VALIDAÇÃO CRÍTICA: Verifica se movimento com humano levaria a beco sem saída"""
         if not self.tem_humano:
+            return
+        if self._esta_na_entrada(nova_posicao):
             return
         
         # Simula o movimento para verificar se resultaria em beco sem saída
@@ -140,7 +167,13 @@ class Robo:
     
     def avancar(self) -> None:
         """Comando A: Avança uma posição para frente"""
+        if self.tem_humano and self._esta_na_entrada():
+            raise OperacaoInvalidaException(
+                "ALARME: Robô com humano na entrada deve ejetar antes de avançar!"
+            )
+
         nova_posicao = self.posicao + self.direcao.get_delta()
+        destino_eh_entrada = self._esta_na_entrada(nova_posicao)
         
         # VALIDAÇÃO CRÍTICA: Verifica colisões
         self._validar_colisao(nova_posicao)
@@ -150,6 +183,9 @@ class Robo:
         
         # Move o robô
         self.posicao = nova_posicao
+
+        if self.tem_humano and destino_eh_entrada:
+            self._ajustar_orientacao_para_interior()
         
         # VALIDAÇÃO CRÍTICA: Verifica beco sem saída após movimento
         self._validar_beco_sem_saida()
@@ -212,6 +248,10 @@ class Robo:
             raise OperacaoInvalidaException(
                 "ALARME: Tentativa de ejetar humano fora da entrada!"
             )
+
+        # Ajusta orientação para saída antes da ejeção
+        if self.direcao != self.direcao_saida:
+            self._girar_para_direcao(self.direcao_saida)
         
         # Ejeta o humano
         if self.labirinto.ejetar_humano():

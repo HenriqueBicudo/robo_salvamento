@@ -38,7 +38,7 @@ class LoggerRobo:
             status_carga.value
         ]
         self.entradas.append(entrada)
-    
+
     def salvar_log(self) -> None:
         """Salva o log em arquivo CSV"""
         try:
