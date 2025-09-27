@@ -72,6 +72,11 @@ class AlgoritmoBusca:
             return False  # Posição desconhecida
         
         tipo = self.mapa_conhecido[posicao]
+        
+        # Verifica se é uma posição válida no labirinto
+        if not self.robo.labirinto.posicao_valida(posicao):
+            return False
+            
         return tipo == TipoSensor.VAZIO or tipo == TipoSensor.HUMANO
     
     def _escolher_proxima_direcao(self) -> Optional[Direcao]:
